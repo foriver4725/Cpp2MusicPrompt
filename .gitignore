@@ -1,0 +1,26 @@
+# CLion
+.idea/
+
+# CMake
+cmake-build-*/
+
+# macOS
+.DS_Store
+
+# Executables
+*.out
+*.exe
+
+# Object files
+*.o
+*.obj
+
+# Debug symbols
+*.dSYM/
+
+# Ninja
+.ninja_*
+build.ninja
+
+# Compilation database
+compile_commands.json
