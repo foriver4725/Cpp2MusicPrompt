@@ -27,9 +27,10 @@ struct AstEvent {
 
 class AstEventVisitor : public RecursiveASTVisitor<AstEventVisitor> {
 public:
-    explicit AstEventVisitor(ASTContext &context)
+    explicit AstEventVisitor(ASTContext &context, std::vector<AstEvent> &outputEvents)
         : context(context),
-          sourceManager(context.getSourceManager()) {
+          sourceManager(context.getSourceManager()),
+          events(outputEvents) {
     }
 
     bool VisitFunctionDecl(FunctionDecl *decl) {
@@ -160,7 +161,7 @@ private:
     ASTContext &context;
     SourceManager &sourceManager;
 
-    std::vector<AstEvent> events;
+    std::vector<AstEvent> &events;
 
     bool IsInMainFile(const Decl *decl) const {
         return IsInMainFile(decl->getBeginLoc());
@@ -210,15 +211,12 @@ private:
 
 class AstEventConsumer : public ASTConsumer {
 public:
-    explicit AstEventConsumer(ASTContext &context)
-        : visitor(context) {
+    AstEventConsumer(ASTContext &context, std::vector<AstEvent> &outputEvents)
+        : visitor(context, outputEvents) {
     }
 
     void HandleTranslationUnit(ASTContext &context) override {
-        visitor.TraverseDecl(
-            context.getTranslationUnitDecl());
-
-        visitor.PrintEvents();
+        visitor.TraverseDecl(context.getTranslationUnitDecl());
     }
 
 private:
@@ -227,12 +225,34 @@ private:
 
 class AstEventAction : public ASTFrontendAction {
 public:
+    explicit AstEventAction(std::vector<AstEvent> &outputEvents)
+        : outputEvents(outputEvents) {
+    }
+
     std::unique_ptr<ASTConsumer> CreateASTConsumer(
         CompilerInstance &compiler,
         llvm::StringRef file) override {
         return std::make_unique<AstEventConsumer>(
-            compiler.getASTContext());
+            compiler.getASTContext(),
+            outputEvents);
     }
+
+private:
+    std::vector<AstEvent> &outputEvents;
+};
+
+class AstEventActionFactory : public FrontendActionFactory {
+public:
+    explicit AstEventActionFactory(std::vector<AstEvent> &outputEvents)
+        : outputEvents(outputEvents) {
+    }
+
+    std::unique_ptr<FrontendAction> create() override {
+        return std::make_unique<AstEventAction>(outputEvents);
+    }
+
+private:
+    std::vector<AstEvent> &outputEvents;
 };
 
 static llvm::cl::OptionCategory ToolCategory(
@@ -259,7 +279,36 @@ int main(int argc, const char **argv) {
         optionsParser.getCompilations(),
         optionsParser.getSourcePathList());
 
-    return tool.run(
-        newFrontendActionFactory<AstEventAction>()
-        .get());
+    std::vector<AstEvent> events;
+
+    AstEventActionFactory factory(events);
+
+    int result = tool.run(&factory);
+
+    std::sort(
+        events.begin(),
+        events.end(),
+        [](const AstEvent &a, const AstEvent &b) {
+            if (a.offset != b.offset)
+                return a.offset < b.offset;
+
+            return a.priority < b.priority;
+        });
+
+    for (const AstEvent &event: events) {
+        std::cout
+                << "[" << event.line
+                << ":" << event.column
+                << "] "
+                << event.kind;
+
+        if (!event.name.empty()) {
+            std::cout << " : "
+                    << event.name;
+        }
+
+        std::cout << std::endl;
+    }
+
+    return result;
 }
