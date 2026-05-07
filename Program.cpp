@@ -1,34 +1,34 @@
 int Add(int a, int b) {
-    int result = a + b;
-    return result;
+    return a + b;
+}
+
+void PrintValue(int value) {
 }
 
 int main() {
     int x = 10;
-    int y = 0;
+    int y = 20;
 
-    if (x > 0) {
-        y = Add(x, 5);
+    int result = Add(x, y);
+
+    if (result > 20) {
+        PrintValue(result);
     } else {
-        y = -1;
+        PrintValue(0);
     }
 
     for (int i = 0; i < 3; i++) {
-        y += i;
+        result += i;
+        PrintValue(result);
     }
 
-    while (y < 20) {
-        y++;
+    while (result < 40) {
+        result++;
     }
 
     do {
-        y--;
-    } while (y > 10);
+        result--;
+    } while (result > 30);
 
-    {
-        int scopedValue = y * 2;
-        y = scopedValue;
-    }
-
-    return y;
+    return 0;
 }
