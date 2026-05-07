@@ -13,40 +13,45 @@ def convert_event_to_music_text(event: dict) -> str:
 
     match kind:
         case "FunctionDefinition":
-            return f"新しいテーマ開始: {name}"
+            return f"Introduce a new musical theme: {name}"
 
         case "VariableDefinition":
-            return f"短いモチーフ追加: {name}"
+            return f"Add a short musical motif: {name}"
 
         case "IfStatement":
-            return "緊張感のある分岐"
+            return "Create a tense branching progression"
 
         case "ForLoop":
-            return "反復リズム"
+            return "Introduce a repetitive rhythmic pattern"
 
         case "WhileLoop":
-            return "継続する不安定な展開"
+            return "Create a continuously unstable development"
 
         case "ReturnStatement":
-            return "終止感"
+            return "Add a feeling of resolution"
 
         case "FunctionCall":
-            return f"既存テーマ再利用: {name}"
+            return f"Reuse an existing musical theme: {name}"
 
         case "ScopeBlockStart":
-            return "セクション開始"
+            return "Begin a new musical section"
 
         case "ScopeBlockEnd":
-            return "セクション終了"
+            return "End the current musical section"
 
         case _:
-            return f"未知イベント: {kind}"
+            return f"Unknown event: {kind}"
 
 
 def build_prompt(events: list[dict]) -> str:
     lines = []
 
-    lines.append("以下のプログラム構造を音楽として表現してください。")
+    lines.append(
+        "Please compose music that represents the following program structure."
+    )
+    lines.append(
+        "Translate programming events into musical ideas, atmosphere, rhythm, and progression."
+    )
     lines.append("")
 
     for event in events:
