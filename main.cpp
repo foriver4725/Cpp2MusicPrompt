@@ -16,10 +16,10 @@ using namespace clang;
 using namespace clang::tooling;
 
 struct AstEvent {
-    unsigned offset;
-    unsigned line;
-    unsigned column;
-    int priority;
+    unsigned offset{};
+    unsigned line{};
+    unsigned column{};
+    int priority{};
 
     std::string kind;
     std::string name;
@@ -33,7 +33,7 @@ public:
           events(outputEvents) {
     }
 
-    bool VisitFunctionDecl(FunctionDecl *decl) {
+    bool VisitFunctionDecl(const FunctionDecl *decl) const {
         if (!IsInMainFile(decl))
             return true;
 
@@ -49,7 +49,7 @@ public:
         return true;
     }
 
-    bool VisitVarDecl(VarDecl *decl) {
+    bool VisitVarDecl(VarDecl *decl) const {
         if (!IsInMainFile(decl))
             return true;
 
@@ -66,7 +66,7 @@ public:
         return true;
     }
 
-    bool VisitIfStmt(IfStmt *stmt) {
+    bool VisitIfStmt(const IfStmt *stmt) const {
         if (!IsInMainFile(stmt))
             return true;
 
@@ -74,7 +74,7 @@ public:
         return true;
     }
 
-    bool VisitForStmt(ForStmt *stmt) {
+    bool VisitForStmt(const ForStmt *stmt) const {
         if (!IsInMainFile(stmt))
             return true;
 
@@ -82,7 +82,7 @@ public:
         return true;
     }
 
-    bool VisitWhileStmt(WhileStmt *stmt) {
+    bool VisitWhileStmt(const WhileStmt *stmt) const {
         if (!IsInMainFile(stmt))
             return true;
 
@@ -90,7 +90,7 @@ public:
         return true;
     }
 
-    bool VisitDoStmt(DoStmt *stmt) {
+    bool VisitDoStmt(const DoStmt *stmt) const {
         if (!IsInMainFile(stmt))
             return true;
 
@@ -98,7 +98,7 @@ public:
         return true;
     }
 
-    bool VisitCompoundStmt(CompoundStmt *stmt) {
+    bool VisitCompoundStmt(const CompoundStmt *stmt) const {
         if (!IsInMainFile(stmt))
             return true;
 
@@ -108,7 +108,7 @@ public:
         return true;
     }
 
-    bool VisitReturnStmt(ReturnStmt *stmt) {
+    bool VisitReturnStmt(const ReturnStmt *stmt) const {
         if (!IsInMainFile(stmt))
             return true;
 
@@ -116,7 +116,7 @@ public:
         return true;
     }
 
-    bool VisitCallExpr(CallExpr *expr) {
+    bool VisitCallExpr(CallExpr *expr) const {
         if (!IsInMainFile(expr))
             return true;
 
@@ -131,10 +131,9 @@ public:
         return true;
     }
 
-    void PrintEvents() {
-        std::sort(
-            events.begin(),
-            events.end(),
+    void PrintEvents() const {
+        std::ranges::sort(
+            events,
             [](const AstEvent &a, const AstEvent &b) {
                 if (a.offset != b.offset)
                     return a.offset < b.offset;
@@ -163,15 +162,15 @@ private:
 
     std::vector<AstEvent> &events;
 
-    bool IsInMainFile(const Decl *decl) const {
+    [[nodiscard]] bool IsInMainFile(const Decl *decl) const {
         return IsInMainFile(decl->getBeginLoc());
     }
 
-    bool IsInMainFile(const Stmt *stmt) const {
+    [[nodiscard]] bool IsInMainFile(const Stmt *stmt) const {
         return IsInMainFile(stmt->getBeginLoc());
     }
 
-    bool IsInMainFile(SourceLocation loc) const {
+    [[nodiscard]] bool IsInMainFile(SourceLocation loc) const {
         loc = sourceManager.getSpellingLoc(loc);
 
         return
@@ -181,9 +180,9 @@ private:
 
     void AddEvent(
         SourceLocation loc,
-        int priority,
+        const int priority,
         std::string kind,
-        std::string name) {
+        std::string name) const {
         loc = sourceManager.getSpellingLoc(loc);
 
         if (!loc.isValid())
@@ -229,6 +228,7 @@ public:
         : outputEvents(outputEvents) {
     }
 
+protected:
     std::unique_ptr<ASTConsumer> CreateASTConsumer(
         CompilerInstance &compiler,
         llvm::StringRef file) override {
@@ -283,11 +283,10 @@ int main(int argc, const char **argv) {
 
     AstEventActionFactory factory(events);
 
-    int result = tool.run(&factory);
+    const int result = tool.run(&factory);
 
-    std::sort(
-        events.begin(),
-        events.end(),
+    std::ranges::sort(
+        events,
         [](const AstEvent &a, const AstEvent &b) {
             if (a.offset != b.offset)
                 return a.offset < b.offset;
