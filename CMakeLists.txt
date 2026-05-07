@@ -5,9 +5,11 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(LLVM_DIR "/opt/homebrew/opt/llvm/lib/cmake/llvm")
 set(Clang_DIR "/opt/homebrew/opt/llvm/lib/cmake/clang")
+set(nlohmann_json_DIR "/opt/homebrew/share/cmake/nlohmann_json")
 
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
+find_package(nlohmann_json REQUIRED CONFIG)
 
 include_directories(SYSTEM
         ${LLVM_INCLUDE_DIRS}
@@ -24,4 +26,5 @@ target_link_libraries(Cpp2MusicPrompt
         clangTooling
         clangBasic
         clangASTMatchers
+        nlohmann_json::nlohmann_json
 )

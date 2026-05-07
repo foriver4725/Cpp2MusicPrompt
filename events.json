@@ -1,0 +1,242 @@
+[
+    {
+        "column": 1,
+        "kind": "FunctionDefinition",
+        "line": 1,
+        "name": "Add",
+        "offset": 0,
+        "priority": 0
+    },
+    {
+        "column": 23,
+        "kind": "ScopeBlockStart",
+        "line": 1,
+        "name": "{}",
+        "offset": 22,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "VariableDefinition",
+        "line": 2,
+        "name": "result",
+        "offset": 28,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "ReturnStatement",
+        "line": 3,
+        "name": "",
+        "offset": 52,
+        "priority": 0
+    },
+    {
+        "column": 1,
+        "kind": "ScopeBlockEnd",
+        "line": 4,
+        "name": "{}",
+        "offset": 67,
+        "priority": 10
+    },
+    {
+        "column": 1,
+        "kind": "FunctionDefinition",
+        "line": 6,
+        "name": "main",
+        "offset": 70,
+        "priority": 0
+    },
+    {
+        "column": 12,
+        "kind": "ScopeBlockStart",
+        "line": 6,
+        "name": "{}",
+        "offset": 81,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "VariableDefinition",
+        "line": 7,
+        "name": "x",
+        "offset": 87,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "VariableDefinition",
+        "line": 8,
+        "name": "y",
+        "offset": 103,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "IfStatement",
+        "line": 10,
+        "name": "",
+        "offset": 119,
+        "priority": 0
+    },
+    {
+        "column": 16,
+        "kind": "ScopeBlockStart",
+        "line": 10,
+        "name": "{}",
+        "offset": 130,
+        "priority": 0
+    },
+    {
+        "column": 13,
+        "kind": "FunctionCall",
+        "line": 11,
+        "name": "Add",
+        "offset": 144,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "ScopeBlockEnd",
+        "line": 12,
+        "name": "{}",
+        "offset": 159,
+        "priority": 10
+    },
+    {
+        "column": 12,
+        "kind": "ScopeBlockStart",
+        "line": 12,
+        "name": "{}",
+        "offset": 166,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "ScopeBlockEnd",
+        "line": 14,
+        "name": "{}",
+        "offset": 188,
+        "priority": 10
+    },
+    {
+        "column": 5,
+        "kind": "ForLoop",
+        "line": 16,
+        "name": "",
+        "offset": 195,
+        "priority": 0
+    },
+    {
+        "column": 10,
+        "kind": "VariableDefinition",
+        "line": 16,
+        "name": "i",
+        "offset": 200,
+        "priority": 0
+    },
+    {
+        "column": 33,
+        "kind": "ScopeBlockStart",
+        "line": 16,
+        "name": "{}",
+        "offset": 223,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "ScopeBlockEnd",
+        "line": 18,
+        "name": "{}",
+        "offset": 245,
+        "priority": 10
+    },
+    {
+        "column": 5,
+        "kind": "WhileLoop",
+        "line": 20,
+        "name": "",
+        "offset": 252,
+        "priority": 0
+    },
+    {
+        "column": 20,
+        "kind": "ScopeBlockStart",
+        "line": 20,
+        "name": "{}",
+        "offset": 267,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "ScopeBlockEnd",
+        "line": 22,
+        "name": "{}",
+        "offset": 286,
+        "priority": 10
+    },
+    {
+        "column": 5,
+        "kind": "DoWhileLoop",
+        "line": 24,
+        "name": "",
+        "offset": 293,
+        "priority": 0
+    },
+    {
+        "column": 8,
+        "kind": "ScopeBlockStart",
+        "line": 24,
+        "name": "{}",
+        "offset": 296,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "ScopeBlockEnd",
+        "line": 26,
+        "name": "{}",
+        "offset": 315,
+        "priority": 10
+    },
+    {
+        "column": 5,
+        "kind": "ScopeBlockStart",
+        "line": 28,
+        "name": "{}",
+        "offset": 338,
+        "priority": 0
+    },
+    {
+        "column": 9,
+        "kind": "VariableDefinition",
+        "line": 29,
+        "name": "scopedValue",
+        "offset": 348,
+        "priority": 0
+    },
+    {
+        "column": 5,
+        "kind": "ScopeBlockEnd",
+        "line": 31,
+        "name": "{}",
+        "offset": 402,
+        "priority": 10
+    },
+    {
+        "column": 5,
+        "kind": "ReturnStatement",
+        "line": 33,
+        "name": "",
+        "offset": 409,
+        "priority": 0
+    },
+    {
+        "column": 1,
+        "kind": "ScopeBlockEnd",
+        "line": 34,
+        "name": "{}",
+        "offset": 419,
+        "priority": 10
+    }
+]

@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
+
+#include <nlohmann/json.hpp>
 
 #include "clang/AST/AST.h"
 #include "clang/AST/RecursiveASTVisitor.h"
@@ -14,6 +17,7 @@
 
 using namespace clang;
 using namespace clang::tooling;
+using json = nlohmann::json;
 
 struct AstEvent {
     unsigned offset{};
@@ -294,20 +298,32 @@ int main(int argc, const char **argv) {
             return a.priority < b.priority;
         });
 
+    json output = json::array();
+
     for (const AstEvent &event: events) {
-        std::cout
-                << "[" << event.line
-                << ":" << event.column
-                << "] "
-                << event.kind;
-
-        if (!event.name.empty()) {
-            std::cout << " : "
-                    << event.name;
-        }
-
-        std::cout << std::endl;
+        output.push_back({
+            {"offset", event.offset},
+            {"line", event.line},
+            {"column", event.column},
+            {"priority", event.priority},
+            {"kind", event.kind},
+            {"name", event.name}
+        });
     }
 
-    return result;
+    // events.json に保存
+    std::ofstream file("events.json");
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open events.json" << std::endl;
+        return 1;
+    }
+
+    file << output.dump(4);
+
+    file.close();
+
+    std::cout << "Generated events.json" << std::endl;
+
+    return 0;
 }
